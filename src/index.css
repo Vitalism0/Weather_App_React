@@ -1,0 +1,25 @@
+:root {
+  --bg: #0e131c; /* фон сторінки */
+  --card: #1d2433; /* фон карток */
+  --card-inner: #202b3b; /* фон вкладених елементів (хвилинний прогноз) */
+  --text: #ffffff;
+  --muted: #8a96a8; /* сірий текст: "Chance of rain", "TODAY'S FORECAST" */
+  --accent: #2f7dff; /* синя кнопка "See more" */
+  --radius: 24px;
+  --radius-sm: 16px;
+  --gap: 16px;
+  --pad: 24px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, sans-serif;
+  min-height: 100vh;
+}

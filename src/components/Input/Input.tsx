@@ -9,8 +9,12 @@ export default function Input({ onSearch }: InputProps) {
   };
   return (
     <form action={search}>
-      <input type="text" name="query" placeholder="Enter city name" />
-      <button type="submit">Search</button>
+      <input
+        className={css.mainInput}
+        type="text"
+        name="query"
+        placeholder="Enter city name"
+      />
     </form>
   );
 }

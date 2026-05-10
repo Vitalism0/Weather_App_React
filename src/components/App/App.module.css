@@ -1,3 +1,11 @@
-body {
-  background-color: #222e40;
+.app {
+  padding: var(--pad);
+  display: grid;
+  grid-template-columns: 94px 1fr 442px;
+  gap: var(--gap);
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
 }
