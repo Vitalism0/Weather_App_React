@@ -4,7 +4,7 @@ import Input from "../Input/Input";
 import css from "./App.module.css";
 import { useQuery } from "@tanstack/react-query";
 import SideBar from "../SideBar/SideBar";
-import ForecastForWeak from "../ForecastForWeak/ForecastForWeak";
+import ForecastForWeek from "../ForecastForWeek/ForecastForWeek";
 import MainWindow from "../MainWindow/MainWindow";
 import AirConditions from "../AirConditions/AirConditions";
 
@@ -22,10 +22,17 @@ export default function App() {
       <SideBar />
       <div className={css.main}>
         <Input onSearch={setQuery} />
-        <MainWindow data={data} isLoading={isLoading} error={error} />
+        {data && (
+          <MainWindow
+            city={data?.location.name}
+            temperature={data?.current.temp_c}
+            chanceOfRain={data?.current.chance_of_rain}
+            code={data?.current.condition.code}
+          />
+        )}
         <AirConditions />
       </div>
-      <ForecastForWeak />
+      <ForecastForWeek />
     </div>
   );
 }

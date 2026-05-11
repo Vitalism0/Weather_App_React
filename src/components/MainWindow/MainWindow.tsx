@@ -1,22 +1,27 @@
+import css from "./MainWindow.module.css";
+import GetWeatherIcon from "../../utils/getWeatherIcon";
+
 interface MainWindowProps {
   city: string;
   temperature: number;
   chanceOfRain: number;
-  icon: string;
+  code: number;
 }
 
 export default function MainWindow({
   city,
   temperature,
   chanceOfRain,
-  icon,
+  code,
 }: MainWindowProps) {
   return (
-    <>
-      <p>{city}</p>
-      <p>{chanceOfRain}% chance of rain</p>
-      <div>{temperature}°C</div>
-      <img src={icon} alt="weather icon" />
-    </>
+    <div className={css.mainWindow}>
+      <div className={css.container}>
+        <h2 className={css.title}>{city}</h2>
+        <p className={css.text}>{chanceOfRain}% chance of rain</p>
+        <div className={css.temperature}>{Math.round(temperature)}°C</div>
+      </div>
+      <GetWeatherIcon code={code} size={150} />
+    </div>
   );
 }

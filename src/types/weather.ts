@@ -7,6 +7,7 @@ export interface CurrentWeather {
   temp_c: number;
   wind_kph: number;
   condition: WeatherCondition;
+  chance_of_rain: number;
 }
 export interface Location {
   name: string;
