@@ -7,6 +7,7 @@ import SideBar from "../SideBar/SideBar";
 import ForecastForWeek from "../ForecastForWeek/ForecastForWeek";
 import MainWindow from "../MainWindow/MainWindow";
 import AirConditions from "../AirConditions/AirConditions";
+import TodayForecast from "../TodaysForecast/TodaysForecast";
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -23,12 +24,17 @@ export default function App() {
       <div className={css.main}>
         <Input onSearch={setQuery} />
         {data && (
-          <MainWindow
-            city={data?.location.name}
-            temperature={data?.current.temp_c}
-            chanceOfRain={data?.current.chance_of_rain}
-            code={data?.current.condition.code}
-          />
+          <>
+            <MainWindow
+              city={data?.location.name}
+              temperature={data?.current.temp_c}
+              chanceOfRain={
+                data?.forecast.forecastday[0].day.daily_chance_of_rain
+              }
+              code={data?.current.condition.code}
+            />
+            <TodayForecast hours={data?.forecast.forecastday[0].hour} />
+          </>
         )}
         <AirConditions />
       </div>

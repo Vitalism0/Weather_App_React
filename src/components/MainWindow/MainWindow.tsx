@@ -1,5 +1,5 @@
 import css from "./MainWindow.module.css";
-import GetWeatherIcon from "../../utils/getWeatherIcon";
+import GetWeatherIcon from "../../utils/GetWeatherIcon";
 
 interface MainWindowProps {
   city: string;
@@ -21,7 +21,7 @@ export default function MainWindow({
         <p className={css.text}>{chanceOfRain}% chance of rain</p>
         <div className={css.temperature}>{Math.round(temperature)}°C</div>
       </div>
-      <GetWeatherIcon code={code} size={150} />
+      <GetWeatherIcon code={code} size={300} />
     </div>
   );
 }

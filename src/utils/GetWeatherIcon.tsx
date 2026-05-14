@@ -1,97 +1,74 @@
+import clearDay from "@bybas/weather-icons/production/fill/all/clear-day.svg";
+import clearNight from "@bybas/weather-icons/production/fill/all/clear-night.svg";
+import partlyCloudyDay from "@bybas/weather-icons/production/fill/all/partly-cloudy-day.svg";
+import partlyCloudyNight from "@bybas/weather-icons/production/fill/all/partly-cloudy-night.svg";
+import cloudy from "@bybas/weather-icons/production/fill/all/cloudy.svg";
+import overcast from "@bybas/weather-icons/production/fill/all/overcast.svg";
+import fog from "@bybas/weather-icons/production/fill/all/fog.svg";
+import mist from "@bybas/weather-icons/production/fill/all/mist.svg";
+import rain from "@bybas/weather-icons/production/fill/all/rain.svg";
+import drizzle from "@bybas/weather-icons/production/fill/all/drizzle.svg";
+import snow from "@bybas/weather-icons/production/fill/all/snow.svg";
+import sleet from "@bybas/weather-icons/production/fill/all/sleet.svg";
+import thunderstorms from "@bybas/weather-icons/production/fill/all/thunderstorms.svg";
+
 interface GetWeatherIconProps {
   code: number;
+  isDay?: number;
   size?: number;
 }
 
+const iconMap: Record<number, string> = {
+  1000: clearDay, // Sunny
+  1003: partlyCloudyDay, // Partly cloudy
+  1006: cloudy, // Cloudy
+  1009: overcast, // Overcast
+  1030: mist, // Mist
+  1135: fog, // Fog
+  1147: fog, // Freezing fog
+  1063: rain, // Patchy rain
+  1150: drizzle,
+  1153: drizzle,
+  1168: drizzle,
+  1171: drizzle,
+  1180: drizzle,
+  1183: drizzle,
+  1186: rain,
+  1189: rain,
+  1192: rain,
+  1195: rain,
+  1240: rain,
+  1243: rain,
+  1246: rain,
+  1066: snow,
+  1210: snow,
+  1213: snow,
+  1216: snow,
+  1219: snow,
+  1222: snow,
+  1225: snow,
+  1237: sleet,
+  1255: snow,
+  1258: snow,
+  1261: sleet,
+  1264: sleet,
+  1273: thunderstorms,
+  1276: thunderstorms,
+  1087: thunderstorms, // Thundery outbreaks
+};
+
 export default function GetWeatherIcon({
   code,
+  isDay = 1,
   size = 64,
 }: GetWeatherIconProps) {
-  if (code === 1000)
-    return (
-      <img
-        src="@meteocons/svg/fill/clear-day.svg"
-        alt="Clear day"
-        width="64"
-        height="64"
-      />
-    );
+  let src = iconMap[code] ?? clearDay;
 
-  // Partly cloudy
-  if (code === 1003)
-    return (
-      <img
-        src="@meteocons/svg/fill/cloudy.svg"
-        alt="Сloudy"
-        width="64"
-        height="64"
-      />
-    );
+  // нічні варіанти для сонця та часткової хмарності
+  if (!isDay) {
+    if (code === 1000) src = clearNight;
+    if (code === 1003) src = partlyCloudyNight;
+  }
 
-  // Cloudy / Overcast
-  if ([1006, 1009].includes(code))
-    return (
-      <img
-        src="@meteocons/svg/fill/cloudy.svg"
-        alt="Cloudy"
-        width="64"
-        height="64"
-      />
-    );
-
-  // Mist / Fog
-  if ([1030, 1135, 1147].includes(code))
-    return (
-      <img src="@meteocons/svg/fill/fog.svg" alt="Fog" width="64" height="64" />
-    );
-
-  // Rain (різні види)
-  if (
-    [
-      1063, 1180, 1183, 1186, 1189, 1192, 1195, 1240, 1243, 1246, 1273, 1276,
-    ].includes(code)
-  )
-    return (
-      <img
-        src="@meteocons/svg/fill/rain.svg"
-        alt="Rain"
-        width="64"
-        height="64"
-      />
-    );
-
-  // Snow
-  if (
-    [
-      1066, 1210, 1213, 1216, 1219, 1222, 1225, 1237, 1255, 1258, 1261, 1264,
-    ].includes(code)
-  )
-    return (
-      <img
-        src="@meteocons/svg/fill/snow.svg"
-        alt="Snow"
-        width="64"
-        height="64"
-      />
-    );
-
-  // Thunderstorm
-  if ([1087].includes(code))
-    return (
-      <img
-        src="@meteocons/svg/fill/thunderstorms.svg"
-        alt="Thunderstorms"
-        width="64"
-        height="64"
-      />
-    );
-
-  return (
-    <img
-      src="@meteocons/svg/fill/clear-day.svg"
-      alt="Clear day"
-      width="64"
-      height="64"
-    />
-  ); // fallback
+  return <img src={src} alt="" width={size} height={size} />;
 }
