@@ -16,7 +16,7 @@ export default function TodayForecast({ hours }: TodaysForecastProps) {
       <div className={css.slots}>
         {slots.map((hour) => (
           <div className={css.slot} key={hour.time}>
-            <span className={css.time}>{hour.time}</span>
+            <span className={css.time}>{hour.time.split(" ")[1]}</span>
             <GetWeatherIcon
               code={hour.condition.code}
               isDay={hour.is_day}
