@@ -50,4 +50,3 @@ export interface WeatherResponse {
   current: CurrentWeather;
   forecast: Forecast;
 }
-d;

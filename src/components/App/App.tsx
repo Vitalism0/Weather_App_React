@@ -59,7 +59,7 @@ export default function App() {
           />
         )}
       </div>
-      <ForecastForWeek />
+      {data && <ForecastForWeek days={data?.forecast.forecastday} />}
     </div>
   );
 }

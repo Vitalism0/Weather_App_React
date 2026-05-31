@@ -1,8 +1,31 @@
-.forecastForWeak {
+.forecastForWeek {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-around;
   background-color: var(--card-inner);
   border-radius: 24px;
+  height: 90vh;
+}
+.title {
+  color: var(--muted);
+  font-size: 30px;
+  letter-spacing: 1.5px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.date {
+  color: var(--muted);
+  font-size: 20px;
+  padding: 0 20px;
+}
+.temp {
+  font-size: 20px;
+  font-weight: 700;
+  padding: 0 20px;
 }
