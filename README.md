@@ -44,6 +44,8 @@ Using `useQuery` to manage asynchronous state instead of hand-rolling `useEffect
 - **react-icons** — UI icons
 
 ## Project structure
+
+```
 src/
 ├── components/
 │   ├── App/              main orchestrator component
@@ -60,16 +62,24 @@ src/
 ├── utils/
 │   └── GetWeatherIcon.tsx  maps weather codes to icons
 └── main.tsx              entry point, QueryClientProvider
+```
 
 ## Getting started
 
 1. Install dependencies:
+
 ```bash
-   npm install
+npm install
 ```
+
 2. Create a `.env` file in the project root and add your key from [weatherapi.com](https://www.weatherapi.com/):
+
+```
 VITE_WEATHER_KEY=your_key_here
+```
+
 3. Start the dev server:
+
 ```bash
-   npm run dev
+npm run dev
 ```
