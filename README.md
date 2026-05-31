@@ -1,80 +1,46 @@
 # Weather App
 
-Навчальний проєкт — погодний дашборд, побудований на React + TypeScript. Інтерфейс натхненний сучасними погодними додатками: ліва навігаційна панель, поле пошуку міста, головна панель з поточною температурою, погодинний прогноз на сьогодні, панель повітряних умов та прогноз на найближчі дні.
+A learning project — a weather dashboard built with React and TypeScript. The UI is inspired by modern weather apps: a left navigation rail, a city search bar, a main panel with the current temperature and conditions, an hourly forecast for today, an air-conditions panel, and a multi-day forecast on the right.
 
-## Що практикувалось
+## What I practiced
 
-Цей проєкт — практика трьох ключових тем:
+This project was built around three focus areas:
 
 ### Props
 
-Розбивка інтерфейсу на маленькі компоненти (`SideBar`, `MainWindow`, `TodaysForecast`, `AirConditions`, `ForecastForWeek`, `Input`) і передача даних між ними через props. Зокрема:
+Splitting the UI into small, focused components (`SideBar`, `MainWindow`, `TodaysForecast`, `AirConditions`, `ForecastForWeek`, `Input`) and passing data between them through props:
 
-- Типізація пропсів через `interface` у TypeScript.
-- Деструктуризація пропсів у сигнатурі функції: `function Component({ prop1, prop2 }: Props)`.
-- Передача масивів та обʼєктів (наприклад, масив годин `Hour[]` у `TodaysForecast`, масив днів `ForecastDay[]` у `ForecastForWeek`).
-- Передача коду погодних умов у переюзовний компонент `GetWeatherIcon` для рендеру правильної іконки.
+- Typing props with TypeScript `interface` definitions.
+- Destructuring props directly in the function signature: `function Component({ prop1, prop2 }: Props)`.
+- Passing arrays and objects down the tree (e.g. `Hour[]` into `TodaysForecast`, `ForecastDay[]` into `ForecastForWeek`).
+- Building a reusable `GetWeatherIcon` component that takes a weather condition code and renders the matching icon.
 
-### Робота з REST API
+### Working with a REST API
 
-Інтеграція з [WeatherAPI.com](https://www.weatherapi.com/) — публічним REST API для отримання поточної погоди та прогнозу:
+Integration with [WeatherAPI.com](https://www.weatherapi.com/) — a public REST API for current weather and forecasts:
 
-- HTTP-запити через `axios` з налаштованим `baseURL`.
-- Передача query-параметрів (`q`, `days`, `key`).
-- Зберігання API-ключа у змінній оточення `VITE_WEATHER_KEY` (файл `.env`).
-- Типізація відповіді API через інтерфейси (`WeatherResponse`, `CurrentWeather`, `ForecastDay`, `Hour`, `Day` тощо) — щоб TypeScript розумів структуру даних.
+- HTTP requests made with `axios`, using a pre-configured `baseURL`.
+- Sending query parameters (`q`, `days`, `key`).
+- Storing the API key in an environment variable (`VITE_WEATHER_KEY`) via a `.env` file.
+- Modeling the API response with TypeScript interfaces (`WeatherResponse`, `CurrentWeather`, `ForecastDay`, `Hour`, `Day`) so the compiler understands the data shape.
 
 ### TanStack Query
 
-Використання `useQuery` для управління асинхронним станом замість ручного `useEffect` + `useState`:
+Using `useQuery` to manage asynchronous state instead of hand-rolling `useEffect` + `useState`:
 
-- Автоматичний кеш запитів за `queryKey`.
-- Готові стани `isLoading`, `error`, `data` — без власних флагів.
-- `enabled` для умовного запуску запиту (тільки коли користувач ввів місто).
-- Звуження типів через `{data && (...)}` для безпечного доступу до полів відповіді.
+- Automatic request caching by `queryKey`.
+- Built-in `isLoading`, `error`, and `data` states — no custom flags.
+- `enabled` flag to defer the request until the user actually types a city.
+- Type narrowing with `{data && (...)}` for safe access to response fields.
 
-## Стек
+## Tech stack
 
 - **React 19** + **TypeScript**
-- **Vite** — збірка та dev-сервер
-- **TanStack Query** — управління серверним станом
-- **Axios** — HTTP-клієнт
-- **CSS Modules** — ізольовані стилі
-- **@bybas/weather-icons** — кольорові SVG-іконки погоди
-- **react-icons** — іконки для UI
+- **Vite** — build tool and dev server
+- **TanStack Query** — server state management
+- **Axios** — HTTP client
+- **CSS Modules** — scoped, collision-free styles
+- **@bybas/weather-icons** — colorful SVG weather icons
+- **react-icons** — UI icons
 
-## Структура проєкту
-
-```
-src/
-├── components/
-│   ├── App/              головний компонент-оркестратор
-│   ├── SideBar/          ліва навігаційна панель
-│   ├── Input/            поле пошуку міста
-│   ├── MainWindow/       поточна погода (місто, температура, іконка)
-│   ├── TodaysForecast/   погодинний прогноз на сьогодні
-│   ├── AirConditions/    панель повітряних умов
-│   └── ForecastForWeek/  прогноз на найближчі дні
-├── services/
-│   └── weatherService.tsx  axios-запит до WeatherAPI
-├── types/
-│   └── weather.ts        інтерфейси для відповіді API
-├── utils/
-│   └── GetWeatherIcon.tsx  маппінг кодів погоди на іконки
-└── main.tsx              точка входу, QueryClientProvider
-```
-
-## Запуск локально
-
-1. Клонувати репозиторій і встановити залежності:
-   ```bash
-   npm install
-   ```
-2. Створити файл `.env` у корені проєкту і додати ключ з [weatherapi.com](https://www.weatherapi.com/):
-   ```
-   VITE_WEATHER_KEY=твій_ключ
-   ```
-3. Запустити dev-сервер:
-   ```bash
-   npm run dev
-   ```
+## Project structure
