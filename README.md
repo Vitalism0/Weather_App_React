@@ -1,75 +1,80 @@
-# React + TypeScript + Vite
+# Weather App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Навчальний проєкт — погодний дашборд, побудований на React + TypeScript. Інтерфейс натхненний сучасними погодними додатками: ліва навігаційна панель, поле пошуку міста, головна панель з поточною температурою, погодинний прогноз на сьогодні, панель повітряних умов та прогноз на найближчі дні.
 
-Currently, two official plugins are available:
+## Що практикувалось
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Цей проєкт — практика трьох ключових тем:
 
-## React Compiler
+### Props
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Розбивка інтерфейсу на маленькі компоненти (`SideBar`, `MainWindow`, `TodaysForecast`, `AirConditions`, `ForecastForWeek`, `Input`) і передача даних між ними через props. Зокрема:
 
-Note: This will impact Vite dev & build performances.
+- Типізація пропсів через `interface` у TypeScript.
+- Деструктуризація пропсів у сигнатурі функції: `function Component({ prop1, prop2 }: Props)`.
+- Передача масивів та обʼєктів (наприклад, масив годин `Hour[]` у `TodaysForecast`, масив днів `ForecastDay[]` у `ForecastForWeek`).
+- Передача коду погодних умов у переюзовний компонент `GetWeatherIcon` для рендеру правильної іконки.
 
-## Expanding the ESLint configuration
+### Робота з REST API
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Інтеграція з [WeatherAPI.com](https://www.weatherapi.com/) — публічним REST API для отримання поточної погоди та прогнозу:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- HTTP-запити через `axios` з налаштованим `baseURL`.
+- Передача query-параметрів (`q`, `days`, `key`).
+- Зберігання API-ключа у змінній оточення `VITE_WEATHER_KEY` (файл `.env`).
+- Типізація відповіді API через інтерфейси (`WeatherResponse`, `CurrentWeather`, `ForecastDay`, `Hour`, `Day` тощо) — щоб TypeScript розумів структуру даних.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### TanStack Query
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Використання `useQuery` для управління асинхронним станом замість ручного `useEffect` + `useState`:
+
+- Автоматичний кеш запитів за `queryKey`.
+- Готові стани `isLoading`, `error`, `data` — без власних флагів.
+- `enabled` для умовного запуску запиту (тільки коли користувач ввів місто).
+- Звуження типів через `{data && (...)}` для безпечного доступу до полів відповіді.
+
+## Стек
+
+- **React 19** + **TypeScript**
+- **Vite** — збірка та dev-сервер
+- **TanStack Query** — управління серверним станом
+- **Axios** — HTTP-клієнт
+- **CSS Modules** — ізольовані стилі
+- **@bybas/weather-icons** — кольорові SVG-іконки погоди
+- **react-icons** — іконки для UI
+
+## Структура проєкту
+
+```
+src/
+├── components/
+│   ├── App/              головний компонент-оркестратор
+│   ├── SideBar/          ліва навігаційна панель
+│   ├── Input/            поле пошуку міста
+│   ├── MainWindow/       поточна погода (місто, температура, іконка)
+│   ├── TodaysForecast/   погодинний прогноз на сьогодні
+│   ├── AirConditions/    панель повітряних умов
+│   └── ForecastForWeek/  прогноз на найближчі дні
+├── services/
+│   └── weatherService.tsx  axios-запит до WeatherAPI
+├── types/
+│   └── weather.ts        інтерфейси для відповіді API
+├── utils/
+│   └── GetWeatherIcon.tsx  маппінг кодів погоди на іконки
+└── main.tsx              точка входу, QueryClientProvider
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Запуск локально
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Клонувати репозиторій і встановити залежності:
+   ```bash
+   npm install
+   ```
+2. Створити файл `.env` у корені проєкту і додати ключ з [weatherapi.com](https://www.weatherapi.com/):
+   ```
+   VITE_WEATHER_KEY=твій_ключ
+   ```
+3. Запустити dev-сервер:
+   ```bash
+   npm run dev
+   ```
